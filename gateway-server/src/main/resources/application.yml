@@ -1,0 +1,37 @@
+server:
+  port: 8770
+
+spring:
+  application:
+    name: gateway-service
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lowerCaseServiceId: true
+      routes:
+        - id: discuss-service
+          uri: lb://discuss-service
+          predicates:
+            - Path=/discuss/**
+          filters:
+            - StripPrefix=1
+        - id: contest-service
+          uri: lb://contest-service
+          predicates:
+            - Path=/contest/**
+          filters:
+              - StripPrefix=1
+        - id: account-service
+          uri: lb://account-service
+          predicates:
+            - Path=/account/**
+          filters:
+              - StripPrefix=1
+
+eurek
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8760/eureka/
